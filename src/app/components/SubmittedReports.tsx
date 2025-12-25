@@ -105,6 +105,8 @@ export default function SubmittedReports({ onBack }: SubmittedReportsProps) {
 
   if (selectedReport) {
     const stats = getStats(selectedReport);
+
+    console.log(stats, "sonu")
     return (
       <div className="min-h-screen bg-gray-50 p-6">
         <div className="container mx-auto max-w-4xl">
@@ -186,7 +188,7 @@ export default function SubmittedReports({ onBack }: SubmittedReportsProps) {
                 <Card>
                   <CardContent className="pt-4 text-center">
                     <div className="text-gray-600 text-sm">NC Open</div>
-                    <div className="text-red-600">{stats.ncOpen}</div>
+                    {/* <div className="text-red-600">{stats.ncOpen}</div> */}
                   </CardContent>
                 </Card>
               </div>
@@ -302,45 +304,58 @@ export default function SubmittedReports({ onBack }: SubmittedReportsProps) {
                       <TableHead className="text-right">Action</TableHead>
                     </TableRow>
                   </TableHeader>
-                  <TableBody>
-                    {filteredReports.map((report) => {
-                      const ncStatus = calculateNCStatus(report);
-                      return (
-                        <TableRow key={report.reportId}>
-                          <TableCell>
-                            {report.reportId}
-                          </TableCell>
-                          <TableCell>{getProjectDisplay(report.project)}</TableCell>
-                          <TableCell>{report.auditType}</TableCell>
-                          <TableCell>
-                            {new Date(report.date).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell>
-                            {ncStatus === 'green' ? (
-                              <div className="flex items-center text-green-600">
-                                <CheckCircle className="w-4 h-4 mr-1" />
-                                <span className="text-sm">All Clear</span>
-                              </div>
-                            ) : (
-                              <div className="flex items-center text-red-600">
-                                <AlertCircle className="w-4 h-4 mr-1" />
-                                <span className="text-sm">NC Open</span>
-                              </div>
-                            )}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => setSelectedReport(report)}
-                            >
-                              View Details
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
+                 <TableBody>
+  {filteredReports.map((report) => {
+    const ncStatus = calculateNCStatus(report);
+    const reportStats = getStats(report); // ✅ FIXED
+
+    console.log(reportStats, "sonusingh")
+
+    return (
+      <TableRow key={report.reportId}>
+        <TableCell>{report.reportId}</TableCell>
+
+        <TableCell>{getProjectDisplay(report.project)}</TableCell>
+
+        <TableCell>{report.auditType}</TableCell>
+
+        <TableCell>
+          {new Date(report.date).toLocaleDateString()}
+        </TableCell>
+
+        <TableCell>
+          {ncStatus === 'green' ? (
+            <div className="flex items-center text-green-600">
+              <CheckCircle className="w-4 h-4 mr-1" />
+              <span className="text-sm">All Clear</span>
+            </div>
+          ) : (
+            <div className="flex items-center text-red-600">
+              <AlertCircle className="w-4 h-4 mr-1" />
+              <span className="text-sm">
+                NC Open {reportStats.totalChecks} / {reportStats.conforming}
+                <span className="ml-1 text-orange-600">
+                  (Pending: {reportStats.ncOpen})
+                </span>
+              </span>
+            </div>
+          )}
+        </TableCell>
+
+        <TableCell className="text-right">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setSelectedReport(report)}
+          >
+            View Details
+          </Button>
+        </TableCell>
+      </TableRow>
+    );
+  })}
+</TableBody>
+
                 </Table>
               </div>
             )}
