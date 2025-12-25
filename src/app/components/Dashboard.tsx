@@ -1,6 +1,7 @@
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { FileText, FolderOpen, Upload, Cloud, LogOut } from 'lucide-react';
+import bexex from './image-logo/Bexex-logo.png';
 
 interface DashboardProps {
   onNavigate: (view: 'dashboard' | 'new-report' | 'submitted-reports' | 'upload-project') => void;
@@ -66,7 +67,7 @@ export default function Dashboard({ onNavigate, onLogout }: DashboardProps) {
       {/* CENTER: Logo */}
       <div className="absolute left-1/2 transform -translate-x-1/2">
         <img
-          src="img"
+          src={bexex}
           alt="Logo"
           className="h-12 w-auto object-contain"
         />
@@ -81,7 +82,7 @@ export default function Dashboard({ onNavigate, onLogout }: DashboardProps) {
 
     {/* CENTERED FLEX LAYOUT */}
     <div className="flex justify-center">
-      <div className="flex flex-col gap-6 w-full max-w-5xl">
+      <div className="flex flex-col gap-6 w-full max-w-5xl mt-6">
         {menuItems.map((item) => {
           const Icon = item.icon;
 
